@@ -1,0 +1,21 @@
+<mat-card>
+    <mat-card-header>
+        <h2>Inicar Sesión</h2>
+    </mat-card-header>
+    <mat-card-content>
+        <form #loginForm="ngForm" (submit)="Login()"> 
+            <mat-form-field>
+                <mat-label>Correo</mat-label>
+                <input matInput [(ngModel)]="usuario.email" placeholder="Correo" name="email" required>
+                <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Contraseña</mat-label>
+                <input type="password" matInput [(ngModel)]="usuario.contrasena " placeholder="Contrasena" name="password" required>
+                <mat-icon matSuffix>lock</mat-icon>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Inicar Sesión</button>
+        </form>
+</mat-card-content>
+</mat-card>
