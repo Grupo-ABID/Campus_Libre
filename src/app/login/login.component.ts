@@ -28,6 +28,8 @@ export class LoginComponent {
     contrasena:'12345' 
   };
 
+  ValidacionLogin:boolean=true;
+
   router=inject(Router);
 
   validarLogin(email:string,contrasena:string):boolean{
@@ -37,9 +39,11 @@ export class LoginComponent {
   Login(){
     if(this.validarLogin(this.usuario.email, this.usuario.contrasena)){
       localStorage.setItem('LoggedInUser', JSON.stringify(this.usuario.email));
+      this.ValidacionLogin=true;
       this.router.navigate(['/dashboard']);
     }else{
-      alert('error mi pana');
+     // alert('error mi pana');
+     this.ValidacionLogin=false;
     }
   }
 }
