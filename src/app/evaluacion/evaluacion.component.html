@@ -1,6 +1,5 @@
-  <div class="container mt-4">
+<div class="container mt-4">
 
-  <!-- Lista de cursos -->
   <div *ngIf="!selectedCourse">
     <h2>Seleccione un curso para evaluar:</h2>
 
@@ -18,43 +17,39 @@
     </ul>
   </div>
 
-  <!-- Formulario de evaluación -->
   <div *ngIf="selectedCourse">
     <h2>Evaluar Curso: {{ selectedCourse.name }}</h2>
 
     <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label for="courseId" class="form-label">Curso:</label>
-        <select formControlName="courseId" id="courseId" class="form-select" [disabled]="true">
-          <option [value]="selectedCourse.id">{{ selectedCourse.name }}</option>
-        </select>
+      <mat-form-field appearance="outline" class="full-width-input">
+        <mat-label>Curso:</mat-label>
+        <mat-select formControlName="courseId" [disabled]="true">
+          <mat-option [value]="selectedCourse.id">{{ selectedCourse.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width-input">
+        <mat-label>Nota (1-7):</mat-label>
+        <input matInput type="number" formControlName="rating" min="1" max="7">
+        <mat-error *ngIf="evaluationForm.get('rating')?.touched && evaluationForm.get('rating')?.invalid">
+          <span *ngIf="evaluationForm.get('rating')?.errors?.['required']">Este campo es obligatorio.</span>
+          <span *ngIf="evaluationForm.get('rating')?.errors?.['min']">La nota mínima es 1.</span>
+          <span *ngIf="evaluationForm.get('rating')?.errors?.['max']">La nota máxima es 7.</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width-input">
+        <mat-label>Comentario:</mat-label>
+        <textarea matInput formControlName="comment" rows="5"></textarea>
+        <mat-error *ngIf="evaluationForm.get('comment')?.touched && evaluationForm.get('comment')?.invalid">
+          <span *ngIf="evaluationForm.get('comment')?.errors?.['required']">Este campo es obligatorio.</span>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!evaluationForm.valid">Enviar Evaluación</button>
+        <button mat-raised-button color="warn" type="button" (click)="cancelEvaluation()">Cancelar</button>
       </div>
-
-      <div class="mb-3">
-        <label for="rating" class="form-label">Nota (1-7):</label>
-        <input type="number" class="form-control" id="rating" formControlName="rating" min="1" max="7">
-
-        <div *ngIf="evaluationForm.get('rating')?.touched && evaluationForm.get('rating')?.invalid" class="text-danger mt-1">
-          <div *ngIf="evaluationForm.get('rating')?.errors?.['required']">Este campo es obligatorio.</div>
-          <div *ngIf="evaluationForm.get('rating')?.errors?.['min']">La nota mínima es 1.</div>
-          <div *ngIf="evaluationForm.get('rating')?.errors?.['max']">La nota máxima es 7.</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="comment" class="form-label">Comentario:</label>
-        <textarea class="form-control" id="comment" rows="3" formControlName="comment"></textarea>
-        <div *ngIf="evaluationForm.get('comment')?.touched && evaluationForm.get('comment')?.invalid" class="text-danger mt-1">
-          <div *ngIf="evaluationForm.get('comment')?.errors?.['required']">Este campo es obligatorio.</div>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary" [disabled]="!evaluationForm.valid">Enviar Evaluación</button>
-      <button type="button" class="btn btn-secondary ms-2" (click)="cancelEvaluation()">Cancelar</button>
-    
     </form>
   </div>
 </div>
-
-
-

@@ -6,13 +6,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from "../dashboard/dashboard.component";  // Para formGroup
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card'; 
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-evaluation',
   templateUrl: './evaluacion.component.html',
   styleUrls: ['./evaluacion.component.scss'],
   standalone:true,
-  imports: [CommonModule, ReactiveFormsModule, MatSidenavModule, MatCardModule] // Lo que uses  
+  imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, CommonModule, ReactiveFormsModule, MatSidenavModule, MatCardModule, MatButtonModule, MatInputModule] // Lo que uses  
   // Lo que uses  
 })
 export class EvaluacionComponent implements OnInit {
