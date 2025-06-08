@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { EvaluacionService } from '../core/evaluacion.service';
+import { CommonModule } from '@angular/common';    // Para *ngIf, *ngFor, etc.
+import { ReactiveFormsModule } from '@angular/forms';  // Para formGroup
 
 @Component({
   selector: 'app-report',
-  imports: [],
   templateUrl: './report.component.html',
-  styleUrl: './report.component.css'
+  standalone:true,
+  imports: [CommonModule, ReactiveFormsModule]  // Lo que uses  
 })
-export class ReportComponent {
+export class ReportComponent implements OnInit {
+  reportData: any[] = [];
 
+  constructor(private evalService: EvaluacionService) {}
+
+  ngOnInit(): void {
+    this.reportData = this.evalService.getGroupedResults();
+  }
 }

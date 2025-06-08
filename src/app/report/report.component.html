@@ -1,1 +1,10 @@
-<p>report works!</p>
+<h2>Reporte de Evaluaciones</h2>
+
+<div *ngFor="let carrera of reportData">
+  <h3>{{ carrera.name }}</h3>
+  <ul>
+    <li *ngFor="let item of carrera.results">
+      {{ item.semestre }}: Promedio {{ item.promedio }}
+    </li>
+  </ul>
+</div>
