@@ -1,20 +1,14 @@
-import { Component, computed, signal } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { MatToolbarModule} from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { CustomSidenavComponent } from "../components/custom-sidenav/custom-sidenav.component";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import { EvaluacionService } from '../core/evaluacion.service';
 
 @Component({
-  selector: 'app-dashboard',
-  imports: [CommonModule, MatButtonModule, RouterLink, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent],
+  selector: 'app-dasboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./dashboard.component.css'],
+  imports: [CommonModule, ReactiveFormsModule]
 })
-export class DashboardComponent {
-
-  collapsed = signal(false);
-  sidenavWidth = computed(() => this.collapsed() ? '65px' : '250px');
+export class DashboardComponent  {
+  
 }

@@ -41,7 +41,7 @@ export class CustomSidenavComponent {
     },
 
     {
-      icon:'notes',
+      icon:'book',
       label:'Evaluación',
       route:'/evaluacion'
     }

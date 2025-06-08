@@ -1,4 +1,7 @@
-<h2>Reporte de Evaluaciones</h2>
+<div class="contenedor-flex">
+  <h2>Reporte de Evaluaciones</h2>
+  <button [routerLink]="['/dashboard']" mat-raised-button color="primary">Salir</button>
+</div>
 
 <div *ngFor="let carrera of reportData">
   <h3>{{ carrera.name }}</h3>

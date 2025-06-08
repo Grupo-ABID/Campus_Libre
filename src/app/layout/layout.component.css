@@ -1,0 +1,25 @@
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem; 
+  background: #fff;
+}
+
+.contenedor {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+mat-sidenav-container {
+  height: calc(100vh - 64px); /* ajusta según la altura de tu toolbar */
+}
+
+mat-sidenav {
+  background: #fff; /* opcional, color de fondo */
+}
+
+mat-sidenav-content {
+  padding: 0.2rem; 
+}

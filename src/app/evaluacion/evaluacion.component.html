@@ -1,29 +1,60 @@
-<div class="container mt-4">
-  <h2>Evaluar Cursos</h2>
+  <div class="container mt-4">
 
-  <div *ngIf="warningUnrated" class="alert alert-warning">
-    Cursos por evaluar.
+  <!-- Lista de cursos -->
+  <div *ngIf="!selectedCourse">
+    <h2>Seleccione un curso para evaluar:</h2>
+
+    <div *ngIf="warningUnrated" class="alert alert-warning">
+      Cursos por evaluar.
+    </div>
+
+    <ul class="list-group">
+      <li 
+        *ngFor="let c of enrolledCourses" 
+        class="list-group-item list-group-item-action curso-item"
+        (click)="selectCourse(c)">
+        {{ c.name }}
+      </li>
+    </ul>
   </div>
 
-  <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="courseId" class="form-label">Curso:</label>
-      <select formControlName="courseId" id="courseId" class="form-select">
-        <option value="">Seleccione un curso</option>
-        <option *ngFor="let c of enrolledCourses" [value]="c.id">{{ c.name }}</option>
-      </select>
-    </div>
+  <!-- Formulario de evaluación -->
+  <div *ngIf="selectedCourse">
+    <h2>Evaluar Curso: {{ selectedCourse.name }}</h2>
 
-    <div class="mb-3">
-      <label for="rating" class="form-label">Nota (1-7):</label>
-      <input type="number" class="form-control" id="rating" formControlName="rating" min="1" max="7">
-    </div>
+    <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="courseId" class="form-label">Curso:</label>
+        <select formControlName="courseId" id="courseId" class="form-select" [disabled]="true">
+          <option [value]="selectedCourse.id">{{ selectedCourse.name }}</option>
+        </select>
+      </div>
 
-    <div class="mb-3">
-      <label for="comment" class="form-label">Comentario:</label>
-      <textarea class="form-control" id="comment" rows="3" formControlName="comment"></textarea>
-    </div>
+      <div class="mb-3">
+        <label for="rating" class="form-label">Nota (1-7):</label>
+        <input type="number" class="form-control" id="rating" formControlName="rating" min="1" max="7">
 
-    <button type="submit" class="btn btn-primary" [disabled]="!evaluationForm.valid">Enviar Evaluación</button>
-  </form>
+        <div *ngIf="evaluationForm.get('rating')?.touched && evaluationForm.get('rating')?.invalid" class="text-danger mt-1">
+          <div *ngIf="evaluationForm.get('rating')?.errors?.['required']">Este campo es obligatorio.</div>
+          <div *ngIf="evaluationForm.get('rating')?.errors?.['min']">La nota mínima es 1.</div>
+          <div *ngIf="evaluationForm.get('rating')?.errors?.['max']">La nota máxima es 7.</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comentario:</label>
+        <textarea class="form-control" id="comment" rows="3" formControlName="comment"></textarea>
+        <div *ngIf="evaluationForm.get('comment')?.touched && evaluationForm.get('comment')?.invalid" class="text-danger mt-1">
+          <div *ngIf="evaluationForm.get('comment')?.errors?.['required']">Este campo es obligatorio.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="!evaluationForm.valid">Enviar Evaluación</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="cancelEvaluation()">Cancelar</button>
+    
+    </form>
+  </div>
 </div>
+
+
+
