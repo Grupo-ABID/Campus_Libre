@@ -5,11 +5,11 @@ import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CustomSidenavComponent } from "../components/custom-sidenav/custom-sidenav.component";
-
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatButtonModule, RouterLink, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent],
+  imports: [CommonModule, MatButtonModule, RouterLink, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, CustomSidenavComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

@@ -1,6 +1,6 @@
 mat-toolbar {
     position: relative;
-    z-index: 5;
+    z-index: 1;
 }
 
 
@@ -10,6 +10,6 @@ mat-toolbar {
 
 mat-sidenav-container {
     width: auto;
-    height: 200px;
+    height: calc(100vh - 64px);
     background: #eee;
 }
