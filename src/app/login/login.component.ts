@@ -40,7 +40,7 @@ export class LoginComponent {
     if(this.validarLogin(this.usuario.email, this.usuario.contrasena)){
       localStorage.setItem('LoggedInUser', JSON.stringify(this.usuario.email));
       this.ValidacionLogin=true;
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['dashboard']);
     }else{
      // alert('error mi pana');
      this.ValidacionLogin=false;
