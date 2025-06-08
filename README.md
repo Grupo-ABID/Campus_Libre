@@ -1,11 +1,13 @@
 ![Banner campus-libre](https://github.com/user-attachments/assets/a61bfc40-1f75-4bbb-988f-803686085cdb)
 
 
-  ![Static Badge](https://img.shields.io/badge/npm-10.9.2-green)
-  ![Static Badge](https://img.shields.io/badge/node-23.11.0-dark--green)
-  ![Static Badge](https://img.shields.io/badge/angular-19.2.11-red)
-  ![Static Badge](https://img.shields.io/badge/bun-1.2.10-blue)
-  ![Static Badge](https://img.shields.io/badge/Status-Desarrollo-purple)
+<div align="center">
+  <img src="https://img.shields.io/badge/npm-10.9.2-green" alt="npm version">
+  <img src="https://img.shields.io/badge/node-23.11.0-dark--green" alt="node version">
+  <img src="https://img.shields.io/badge/angular-19.2.11-red" alt="angular version">
+  <img src="https://img.shields.io/badge/bun-1.2.10-blue" alt="bun version">
+  <img src="https://img.shields.io/badge/Status-Desarrollo-purple" alt="project status">
+</div>
 
 ---
 ### Descripción de su proyecto
