@@ -1,43 +1,57 @@
 import { Component, OnInit } from '@angular/core';
-import { EvaluacionService } from '../core/evaluacion.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';    // Para *ngIf, *ngFor, etc.
-import { ReactiveFormsModule } from '@angular/forms';  // Para formGroup
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {MatCardModule} from '@angular/material/card'; 
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-
-import { MatDialogModule, MatDialog} from '@angular/material/dialog';
-import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
 
 @Component({
   selector: 'app-evaluation',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatSnackBarModule,
+  ],
   templateUrl: './evaluacion.component.html',
-  styleUrls: ['./evaluacion.component.scss'],
-  standalone:true,
-  imports: [MatSnackBarModule, MatDialogModule, MatFormFieldModule, MatSelectModule, CommonModule, ReactiveFormsModule, MatSidenavModule, MatCardModule, MatButtonModule, MatInputModule, DialogComponent] // Lo que uses  
-  // Lo que uses  
+  styleUrls: ['./evaluacion.component.scss']
 })
-
-
 export class EvaluacionComponent implements OnInit {
-  enrolledCourses: any[] = [];
+  enrolledCourses = [
+    { id: 1, name: 'Matemáticas', evaluated: false },
+    { id: 2, name: 'Matemáticas II', evaluated: true },
+    { id: 3, name: 'Programación Orientada a Objetos', evaluated: false }
+  ];
+
   selectedCourse: any = null;
-  warningUnrated: boolean = false;
+  warningUnrated = false;
   evaluationForm!: FormGroup;
 
-
-
-  constructor(private fb: FormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar) {}
+  constructor(
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    this.loadCourses();
+    this.initForm();
+    this.checkUnratedCourses();
+  }
 
+  private initForm(): void {
     this.evaluationForm = this.fb.group({
       courseId: ['', Validators.required],
       rating: ['', [Validators.required, Validators.min(1), Validators.max(7)]],
@@ -45,15 +59,7 @@ export class EvaluacionComponent implements OnInit {
     });
   }
 
-  loadCourses(): void {
-    // Simulación, reemplazar con llamado a backend
-    this.enrolledCourses = [
-      { id: 1, name: 'Matemáticas', evaluated: false },
-      { id: 2, name: 'Matemáticas II', evaluated: true },
-      { id: 3, name: 'Programación Orientada a Objetos', evaluated: false }
-    ];
-
-    // Lógica para advertencia (ejemplo)
+  private checkUnratedCourses(): void {
     this.warningUnrated = this.enrolledCourses.some(c => !c.evaluated);
   }
 
@@ -65,14 +71,16 @@ export class EvaluacionComponent implements OnInit {
       comment: ''
     });
   }
-
+  
   cancelEvaluation(): void {
-    this.dialog.open(DialogComponent, {
-      width:'350px',
-    });
+    this.resetEvaluation();
+  }
+
+
+  private resetEvaluation(): void {
     this.selectedCourse = null;
     this.evaluationForm.reset();
-    this.loadCourses();
+    this.checkUnratedCourses();
   }
 
   onSubmit(): void {
@@ -81,26 +89,24 @@ export class EvaluacionComponent implements OnInit {
       return;
     }
 
-    const data = this.evaluationForm.value;
-    console.log('Datos enviados:', data);
-
+    // Procesar envío de datos (puedes reemplazar con llamada a servicio)
+    console.log('Datos enviados:', this.evaluationForm.value);
 
     this.snackBar.open('¡Evaluación enviada correctamente!', 'Cerrar', {
-      duration: 3000, // Duración en milisegundos (3 segundos)
-      horizontalPosition: 'center', // Posición horizontal del snackbar
-      verticalPosition: 'bottom', // Posición vertical del snackbar
-      panelClass: ['snackbar-success'] // Clase CSS opcional para estilizado personalizado
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+      panelClass: ['snackbar-success']
     });
-    
-    if (this.selectedCourse) {
-      const index = this.enrolledCourses.findIndex(c => c.id === this.selectedCourse!.id);
-      if (index !== -1) {
-        this.enrolledCourses[index].evaluated = true;
-      }
+
+    this.markCourseEvaluated(this.evaluationForm.value.courseId);
+    this.resetEvaluation();
+  }
+
+  private markCourseEvaluated(courseId: number): void {
+    const course = this.enrolledCourses.find(c => c.id === courseId);
+    if (course) {
+      course.evaluated = true;
     }
-    
-    this.selectedCourse = null;
-    this.evaluationForm.reset();
-    this.loadCourses();
   }
 }

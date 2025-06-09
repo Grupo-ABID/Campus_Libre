@@ -33,4 +33,16 @@ export class EvaluacionService {
       { name: 'Prof. Soto', promedio: 4.9 }
     ];
   }
+
+  getEvaluacionesPorMes() {
+  // Simulación de datos agrupados por mes
+  return [
+    { mes: 'Ene', cantidad: 5 },
+    { mes: 'Feb', cantidad: 12 },
+    { mes: 'Mar', cantidad: 8 },
+    { mes: 'Abr', cantidad: 15 },
+    { mes: 'May', cantidad: 7 },
+    { mes: 'Jun', cantidad: 10 }
+    ];
+  }
 }
