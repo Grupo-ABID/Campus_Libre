@@ -1,14 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import { EvaluacionService } from '../core/evaluacion.service';
+import { Component } from '@angular/core';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 
 @Component({
-  selector: 'app-dasboard',
+  selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
-  imports: [CommonModule, ReactiveFormsModule]
 })
-export class DashboardComponent  {
-  
+export class DashboardComponent {
+  barChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
+  barChartLabels: string[] = ['Ene', 'Feb', 'Mar', 'Abr'];
+
+  barChartData: ChartDataset<'bar'>[] = [
+    { data: [5, 8, 6, 10], label: 'Evaluaciones' }
+  ];
+
+  barChartType: ChartType = 'bar';
 }
