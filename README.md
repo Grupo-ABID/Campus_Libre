@@ -125,7 +125,7 @@ Este comando `ng serve` debe ser ocupado estando en la raíz del proyecto.
 
 - **ng2-charts** – Realizar todo el apartado de dashboard.
 
-- - **Angular/material** – Crear frontend de una forma fácil y moderna.
+- **Angular/material** – Crear frontend de una forma fácil y moderna.
 
 - **Git** – Control de versiones.
 
