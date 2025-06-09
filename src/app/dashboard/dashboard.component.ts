@@ -1,52 +1,34 @@
-import { Component } from '@angular/core';
-import * as Highcharts from 'highcharts';
+import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-dashboard',
-  template: `
-    <highcharts-chart 
-      [Highcharts]="Highcharts" 
-      [options]="chartOptions" 
-      style="width: 100%; height: 400px; display: block;">
-    </highcharts-chart>
-  `
+  templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent {
-  Highcharts: typeof Highcharts = Highcharts;
+export class DashboardComponent implements AfterViewInit {
+  @ViewChild('myChart') chartRef!: ElementRef;
 
-  chartOptions: Highcharts.Options = {
-    chart: {
-      type: 'column'
-    },
-    title: {
-      text: 'Evaluación Docente'
-    },
-    xAxis: {
-      categories: ['Prof. Pérez', 'Prof. Soto', 'Prof. Gómez', 'Prof. Ramírez'],
-      title: {
-        text: 'Profesores'
+  ngAfterViewInit(): void {
+    new Chart(this.chartRef.nativeElement, {
+      type: 'bar',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr'],
+        datasets: [
+          {
+            label: 'Evaluaciones',
+            data: [5, 8, 6, 10],
+            backgroundColor: '#42A5F5'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true
+          }
+        }
       }
-    },
-    yAxis: {
-      min: 0,
-      max: 7,
-      title: {
-        text: 'Promedio de Evaluación'
-      }
-    },
-    series: [
-      {
-        name: 'Promedio',
-        type: 'column',
-        data: [5.6, 4.9, 6.2, 5.1],
-        color: '#1f77b4'
-      }
-    ],
-    tooltip: {
-      pointFormat: 'Promedio: <b>{point.y}</b>'
-    },
-    credits: {
-      enabled: false
-    }
-  };
+    });
+  }
 }
