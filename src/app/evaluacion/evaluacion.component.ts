@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EvaluacionService } from '../core/evaluacion.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';    // Para *ngIf, *ngFor, etc.
-import { ReactiveFormsModule } from '@angular/forms';
-import { DashboardComponent } from "../dashboard/dashboard.component";  // Para formGroup
+import { ReactiveFormsModule } from '@angular/forms';  // Para formGroup
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card'; 
 import {MatButtonModule} from '@angular/material/button';
