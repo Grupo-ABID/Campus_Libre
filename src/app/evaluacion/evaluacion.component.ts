@@ -20,7 +20,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   templateUrl: './evaluacion.component.html',
   styleUrls: ['./evaluacion.component.scss'],
   standalone:true,
-  imports: [MatSnackBarModule, MatDialogModule, MatFormFieldModule, MatSelectModule, CommonModule, ReactiveFormsModule, MatSidenavModule, MatCardModule, MatButtonModule, MatInputModule, DialogComponent] // Lo que uses  
+  imports: [MatSnackBarModule, MatDialogModule, MatFormFieldModule, MatSelectModule, CommonModule, ReactiveFormsModule, MatSidenavModule, MatCardModule, MatButtonModule, MatInputModule] // Lo que uses  
   // Lo que uses  
 })
 
