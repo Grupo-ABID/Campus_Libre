@@ -9,7 +9,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatDialogModule } from '@angular/material/dialog';
+
+import { MatDialogModule, MatDialog} from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -17,16 +20,20 @@ import { MatDialogModule } from '@angular/material/dialog';
   templateUrl: './evaluacion.component.html',
   styleUrls: ['./evaluacion.component.scss'],
   standalone:true,
-  imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, CommonModule, ReactiveFormsModule, MatSidenavModule, MatCardModule, MatButtonModule, MatInputModule] // Lo que uses  
+  imports: [MatSnackBarModule, MatDialogModule, MatFormFieldModule, MatSelectModule, CommonModule, ReactiveFormsModule, MatSidenavModule, MatCardModule, MatButtonModule, MatInputModule, DialogComponent] // Lo que uses  
   // Lo que uses  
 })
+
+
 export class EvaluacionComponent implements OnInit {
   enrolledCourses: any[] = [];
   selectedCourse: any = null;
   warningUnrated: boolean = false;
   evaluationForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+
+
+  constructor(private fb: FormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadCourses();
@@ -41,13 +48,13 @@ export class EvaluacionComponent implements OnInit {
   loadCourses(): void {
     // Simulación, reemplazar con llamado a backend
     this.enrolledCourses = [
-      { id: 1, name: 'Matemáticas' },
-      { id: 2, name: 'Matemáticas II' },
-      { id: 3, name: 'Programación Orientada a Objetos' }
+      { id: 1, name: 'Matemáticas', evaluated: false },
+      { id: 2, name: 'Matemáticas II', evaluated: true },
+      { id: 3, name: 'Programación Orientada a Objetos', evaluated: false }
     ];
 
     // Lógica para advertencia (ejemplo)
-    this.warningUnrated = this.enrolledCourses.length > 0;
+    this.warningUnrated = this.enrolledCourses.some(c => !c.evaluated);
   }
 
   selectCourse(course: any): void {
@@ -60,8 +67,12 @@ export class EvaluacionComponent implements OnInit {
   }
 
   cancelEvaluation(): void {
+    this.dialog.open(DialogComponent, {
+      width:'350px',
+    });
     this.selectedCourse = null;
     this.evaluationForm.reset();
+    this.loadCourses();
   }
 
   onSubmit(): void {
@@ -72,8 +83,24 @@ export class EvaluacionComponent implements OnInit {
 
     const data = this.evaluationForm.value;
     console.log('Datos enviados:', data);
-    alert('¡Evaluación enviada correctamente!');
+
+
+    this.snackBar.open('¡Evaluación enviada correctamente!', 'Cerrar', {
+      duration: 3000, // Duración en milisegundos (3 segundos)
+      horizontalPosition: 'center', // Posición horizontal del snackbar
+      verticalPosition: 'bottom', // Posición vertical del snackbar
+      panelClass: ['snackbar-success'] // Clase CSS opcional para estilizado personalizado
+    });
+    
+    if (this.selectedCourse) {
+      const index = this.enrolledCourses.findIndex(c => c.id === this.selectedCourse!.id);
+      if (index !== -1) {
+        this.enrolledCourses[index].evaluated = true;
+      }
+    }
+    
     this.selectedCourse = null;
     this.evaluationForm.reset();
+    this.loadCourses();
   }
 }
