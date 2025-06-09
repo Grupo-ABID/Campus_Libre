@@ -95,6 +95,20 @@ En caso de no querer ocupar Docker, se puede hacer todo de manera local con el c
 # Iniciar el server de desarrollo local
 ng serve
 ```
+---
+> [!warning]
+    en caso de tener problemas con el dashboard, instalar de manera manual lo siguiente:
+   
+   ``` 
+   npm install chart.js@^4.0.0 ng2-charts@^5.0.0 
+   ```
+  También se puede ocupar 
+  ```
+  bun add chart.js@^4.0.0 ng2-charts@^5.0.0
+  ``` 
+Importante indicar las versiones para no tener problemas de incompatibilidades.
+
+---
 
 Una vez iniciado el servidor, abre el browser y en el buscador coloca http://localhost:4200/ o copias la URL que te entrega la terminal, haciendo CTRL + click izquierdo. 
 
@@ -107,7 +121,11 @@ Este comando `ng serve` debe ser ocupado estando en la raíz del proyecto.
 
 - **Docker** – Contenerización de la aplicación.
 
-- **Django Restframework** - Desarrollo de Backend. 
+- **Django Restframework** - Desarrollo de Backend.
+
+- **ng2-charts** – Realizar todo el apartado de dashboard.
+
+- - **Angular/material** – Crear frontend de una forma fácil y moderna.
 
 - **Git** – Control de versiones.
 
