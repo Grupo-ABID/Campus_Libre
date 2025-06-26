@@ -84,4 +84,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Lógica de limpieza
   }
+  private prepareChartData(): void {
+    const careers = Array.from(new Set(this.mockEvaluations.map(e => e.career)));
+    const semesters = Array.from(new Set(this.mockEvaluations.map(e => e.semester))).sort();
+
+    const backgroundColors: string[] = [
+      'rgba(66, 165, 245, 0.8)',
+      'rgba(255, 167, 38, 0.8)',
+      'rgba(102, 187, 106, 0.8)',
+      'rgba(239, 83, 80, 0.8)',
+      'rgba(171, 71, 188, 0.8)',
+      'rgba(84, 110, 122, 0.8)',
+      'rgba(255, 205, 86, 0.8)',
+      'rgba(75, 192, 192, 0.8)'
+    ];
+
+    const datasets = semesters.map((semester, index) => {
+      const dataForSemester = careers.map(career => {
+        const evaluationEntry = this.mockEvaluations.find(
+          e => e.career === career && e.semester === semester
+        );
+        return evaluationEntry ? evaluationEntry.evaluations : 0;
+      });
+
+      return {
+        label: `Evaluaciones ${semester}`,
+        data: dataForSemester,
+        backgroundColor: backgroundColors[index % backgroundColors.length],
+        borderColor: backgroundColors[index % backgroundColors.length].replace('0.8', '1'),
+        borderWidth: 1,
+      };
+    });
+
+    this.barChartData = {
+      labels: careers,
+      datasets: datasets,
+    };
+  }
 }
