@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
 
@@ -28,6 +29,8 @@ export class DashboardComponent implements AfterViewInit {
           legend: {
             display: true
 =======
+=======
+>>>>>>> Stashed changes
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
@@ -108,6 +111,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
