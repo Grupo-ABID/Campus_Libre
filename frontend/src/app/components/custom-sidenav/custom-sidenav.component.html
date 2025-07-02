@@ -4,8 +4,8 @@
         <p> CAMPUS LIBRE </p>
     </div>
 
-    <mat-nav-list>
-    <a mat-list-item *ngFor="let item of menuItems()" [routerLink]="item.route">
+<mat-nav-list>
+    <a mat-list-item *ngFor="let item of menuItems()" [routerLink]="item.route" routerLinkActive="active-link">
         <mat-icon matListItemIcon>{{ item.icon }} </mat-icon>
         <span matListItemTitle *ngIf="!sideNavCollapsed()">{{ item.label }} </span>
     </a>

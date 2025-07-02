@@ -22,6 +22,15 @@ export class ReportComponent implements OnInit {
   constructor(private evalService: EvaluacionService) {}
 
   ngOnInit(): void {
-    this.reportData = this.evalService.getGroupedResults();
+    this.evalService.getGroupedResults().subscribe({
+      next: (data) => {
+        this.reportData = data;
+      }, 
+    error: (error) => {
+      console.error('Error al obtener datos:', error);
+    }
+  });
+
+
   }
 }

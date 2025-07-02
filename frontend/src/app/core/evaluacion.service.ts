@@ -6,37 +6,24 @@ import { Observable } from 'rxjs';
 
 export class EvaluacionService {
   
+private apiUrl = 'http://127.0.0.1:8000/api/evaluaciones/';
 
-private courses = [
-    { id: 1, name: 'Matemáticas I', evaluated: false },
-    { id: 2, name: 'Historia', evaluated: true }
-  ];
-  private evaluations: any[] = [];
+constructor(private http: HttpClient) {}
 
   getEnrolledCourses() {
-    return this.courses;
+    
   }
 
   saveEvaluation(data: any) {
-    const course = this.courses.find(c => c.id === +data.courseId);
-    if (course) course.evaluated = true;
-    this.evaluations.push(data);
+   
   }
 
-  getGroupedResults() {
-    return [
-      {
-        name: 'Ingeniería',
-        results: [{ semestre: '2024-2', promedio: 5.3 }]
-      }
-    ];
+  getGroupedResults(): Observable<any> {
+    return this.http.get<any[]>(this.apiUrl);
   }
 
   getTeacherEvaluations() {
-    return [
-      { name: 'Prof. Pérez', promedio: 5.6 },
-      { name: 'Prof. Soto', promedio: 4.9 }
-    ];
+    
   }
 }
 

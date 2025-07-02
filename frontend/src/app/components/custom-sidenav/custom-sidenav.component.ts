@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import {CommonModule} from '@angular/common';
@@ -18,7 +18,7 @@ export type MenuItem = {
   templateUrl: './custom-sidenav.component.html',
   styleUrl: './custom-sidenav.component.css'
 })
-export class CustomSidenavComponent {
+export class CustomSidenavComponent implements OnInit {
 
   sideNavCollapsed = signal(false);
   @Input() set collapsed(val: boolean){
@@ -50,6 +50,9 @@ export class CustomSidenavComponent {
   ]);
 
 
-
+  ngOnInit(): void {
+    console.log(this.menuItems());
+  }
+  
 }
 
