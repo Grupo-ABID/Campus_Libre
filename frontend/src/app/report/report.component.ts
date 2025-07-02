@@ -15,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
   standalone:true,
   imports: [MatListModule, MatDividerModule, MatCardModule, MatToolbarModule, CommonModule, ReactiveFormsModule, RouterLink, MatButtonModule]  // Lo que uses  
 })
+
 export class ReportComponent implements OnInit {
   reportData: any[] = [];
 

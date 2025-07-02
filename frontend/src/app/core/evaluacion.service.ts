@@ -1,8 +1,13 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
+
 export class EvaluacionService {
-  private courses = [
+  
+
+private courses = [
     { id: 1, name: 'Matemáticas I', evaluated: false },
     { id: 2, name: 'Historia', evaluated: true }
   ];
@@ -34,3 +39,4 @@ export class EvaluacionService {
     ];
   }
 }
+
