@@ -1,55 +1,73 @@
-<div class="container mt-4">
+<!-- <pre>{{ enrolledCourses | json }}</pre> -->
 
-  <div *ngIf="!selectedCourse">
-    <h2>Seleccione un curso para evaluar:</h2>
+<div class="container">
+  <mat-card *ngIf="warningUnrated" class="warning-card">
+    <mat-card-content>
+      Tienes cursos pendientes por evaluar.
+    </mat-card-content>
+  </mat-card>
 
-    <div *ngIf="warningUnrated" class="alert alert-warning">
-      Cursos por evaluar.
-    </div>
+  <mat-card class="course-list-card">
+    <mat-card-header>
+      <mat-card-title>Seleccione un curso para evaluar:</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let course of enrolledCourses" (click)="selectCourse(course)"
+          [class.selected]="selectedCourse && selectedCourse.id === course.id"
+          [class.evaluated]="course.evaluated">
+          <h3 matLine>{{ course.name }}</h3>
+          <p matLine *ngIf="course.evaluated">Evaluado</p>
+          <p matLine *ngIf="!course.evaluated">Pendiente de evaluación</p>
+          <mat-icon matListItemIcon *ngIf="course.evaluated">check_circle</mat-icon>
+          <mat-icon matListItemIcon *ngIf="!course.evaluated">warning</mat-icon>
+        </mat-list-item>
+      </mat-list>
+      <p *ngIf="enrolledCourses.length === 0">No hay cursos disponibles para evaluar.</p>
+    </mat-card-content>
+  </mat-card>
 
-    <ul class="list-group">
-      <li 
-        *ngFor="let c of enrolledCourses" 
-        class="list-group-item list-group-item-action curso-item"
-        (click)="selectCourse(c)">
-        {{ c.name }}
-      </li>
-    </ul>
-  </div>
+  <mat-card *ngIf="selectedCourse" class="evaluation-form-card">
+    <mat-card-header>
+      <mat-card-title>Evaluar Curso: {{ selectedCourse.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()">
 
-  <div *ngIf="selectedCourse">
-    <h2>Evaluar Curso: {{ selectedCourse.name }}</h2>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Curso</mat-label>
+          <mat-select formControlName="curso">
+            <mat-option [value]="selectedCourse.id">{{ selectedCourse.name }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="evaluationForm.get('curso')?.invalid && evaluationForm.get('curso')?.touched">
+            Selecciona un curso.
+          </mat-error>
+        </mat-form-field>
 
-    <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline" class="full-width-input">
-        <mat-label>Curso:</mat-label>
-        <mat-select formControlName="courseId" [disabled]="true">
-          <mat-option [value]="selectedCourse.id">{{ selectedCourse.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Nota (1-7)</mat-label>
+          <input matInput type="number" formControlName="rating" min="1" max="7">
+          <mat-error *ngIf="evaluationForm.get('rating')?.hasError('required') && evaluationForm.get('rating')?.touched">
+            La nota es requerida.
+          </mat-error>
+          <mat-error *ngIf="(evaluationForm.get('rating')?.hasError('min') || evaluationForm.get('rating')?.hasError('max')) && evaluationForm.get('rating')?.touched">
+            La nota debe estar entre 1 y 7.
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width-input">
-        <mat-label>Nota (1-7):</mat-label>
-        <input matInput type="number" formControlName="rating" min="1" max="7">
-        <mat-error *ngIf="evaluationForm.get('rating')?.touched && evaluationForm.get('rating')?.invalid">
-          <span *ngIf="evaluationForm.get('rating')?.errors?.['required']">Este campo es obligatorio.</span>
-          <span *ngIf="evaluationForm.get('rating')?.errors?.['min']">La nota mínima es 1.</span>
-          <span *ngIf="evaluationForm.get('rating')?.errors?.['max']">La nota máxima es 7.</span>
-        </mat-error>
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Comentario</mat-label>
+          <textarea matInput formControlName="comment" rows="5"></textarea>
+          <mat-error *ngIf="evaluationForm.get('comment')?.hasError('required') && evaluationForm.get('comment')?.touched">
+            El comentario es requerido.
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width-input">
-        <mat-label>Comentario:</mat-label>
-        <textarea matInput formControlName="comment" rows="5"></textarea>
-        <mat-error *ngIf="evaluationForm.get('comment')?.touched && evaluationForm.get('comment')?.invalid">
-          <span *ngIf="evaluationForm.get('comment')?.errors?.['required']">Este campo es obligatorio.</span>
-        </mat-error>
-      </mat-form-field>
-
-      <div class="form-actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!evaluationForm.valid">Enviar Evaluación</button>
-        <button mat-raised-button color="warn" type="button" (click)="cancelEvaluation()">Cancelar</button>
-      </div>
-    </form>
-  </div>
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="evaluationForm.invalid">Enviar Evaluación</button>
+          <button mat-raised-button color="warn" type="button" (click)="cancelEvaluation()">Cancelar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

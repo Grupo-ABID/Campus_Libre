@@ -1,55 +1,146 @@
-.curso-item {
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+/* src/app/components/evaluacion/evaluacion.component.scss */
+
+:host {
+  display: block; // Asegura que el componente ocupe todo el ancho disponible
+  padding: 20px; // Espacio alrededor de todo el componente
+  background-color: #f5f5f5; // Un fondo suave para la página
 }
 
-.curso-item:hover {
-  background-color: #e9ecef;
-  box-shadow: inset 3px 0 0 #007bff;
-  color: #007bff;
-}
-
-button {
-  padding: 1rem;
-  margin-left: 0.5rem;
-}
-
-form {
-    max-width: 400px;
-    margin: 2rem auto;
-    text-align: center;
-}
-
-/* evaluacion.component.css (o .scss) */
-
-/* Asegura que los campos de formulario ocupen el ancho completo */
-.full-width-input {
-  width: 100%;
-  margin-bottom: 20px; /* Espacio debajo de cada campo */
-}
-
-/* Estilos para el contenedor de los botones */
-.form-actions {
-  display: flex; /* Alinea los botones horizontalmente */
-  gap: 10px;     /* Espacio entre los botones */
-  justify-content: flex-end; /* Alinea los botones a la derecha */
-  margin-top: 20px; /* Espacio encima de los botones */
-}
-
-/* Opcional: Estilo para los ítems de la lista de cursos */
-.curso-item {
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.curso-item:hover {
-  background-color: #f0f0f0; /* Un color suave al pasar el ratón */
-}
-
-/* Opcional: Ajustar el ancho del contenedor principal para que no sea tan amplio en pantallas grandes */
 .container {
-  max-width: 800px; /* Limita el ancho máximo del contenedor */
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px; /* Añade un poco de relleno interno */
+  max-width: 800px; // Limita el ancho máximo del contenido
+  margin: 20px auto; // Centra el contenedor en la página y da espacio vertical
+  padding: 20px;
+  background-color: #ffffff; // Fondo blanco para el contenido principal
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Sombra suave para un efecto de elevación
+  border-radius: 8px; // Bordes redondeados
+}
+
+h1 {
+  text-align: center;
+  color: #3f51b5; // Color primario de Material Design
+  margin-bottom: 30px;
+}
+
+/* Estilos generales para las tarjetas de Material */
+mat-card {
+  margin-bottom: 25px; // Espacio entre las tarjetas
+  border-radius: 8px; // Asegura bordes redondeados en las tarjetas
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); // Sombra más sutil para las tarjetas
+}
+
+mat-card-header {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee; // Línea debajo del título de la tarjeta
+  margin-bottom: 20px;
+}
+
+mat-card-title {
+  color: #303f9f; // Un tono más oscuro para los títulos de tarjeta
+  font-size: 1.5em;
+}
+
+mat-card-content {
+  padding-top: 15px; // Espacio superior dentro del contenido de la tarjeta
+}
+
+/* Estilos específicos para la tarjeta de advertencia */
+.warning-card {
+  background-color: #fffde7; // Amarillo muy claro
+  color: #ffa000; // Naranja para el texto
+  border-left: 5px solid #ffa000; // Borde izquierdo naranja
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+/* Estilos para la lista de cursos */
+.course-list-card mat-list-item {
+  cursor: pointer; // Indica que se puede hacer clic
+  border-bottom: 1px solid #eee; // Separador entre elementos de la lista
+  padding: 15px 0; // Más padding para cada elemento
+  transition: background-color 0.2s ease-in-out; // Transición suave al pasar el mouse
+
+  &:last-child {
+    border-bottom: none; // No hay borde en el último elemento
+  }
+
+  &:hover {
+    background-color: #e0e0e0; // Fondo al pasar el mouse
+  }
+
+  &.selected {
+    background-color: #c5cae9; // Color de selección (azul claro)
+    color: #303f9f;
+    font-weight: bold;
+  }
+
+  &.evaluated {
+    opacity: 0.7; // Cursos evaluados se ven un poco más tenues
+    background-color: #e8f5e9; // Fondo verde claro para evaluados
+    color: #388e3c; // Verde para el texto
+  }
+
+  mat-icon {
+    margin-left: 10px; // Espacio a la izquierda del ícono
+    color: #424242; // Color por defecto para los íconos
+    &.evaluated {
+        color: #388e3c; /* Verde para el check */
+    }
+    &.warning {
+        color: #ffa000; /* Naranja para el warning */
+    }
+  }
+}
+
+.course-list-card p {
+    color: #757575; /* Color más suave para el texto de estado */
+    font-size: 0.9em;
+}
+
+
+/* Estilos para el formulario de evaluación */
+.evaluation-form-card {
+  padding: 25px; // Más espacio interno en la tarjeta del formulario
+}
+
+.full-width {
+  width: 100%; // Hace que los campos de formulario ocupen todo el ancho
+  margin-bottom: 20px; // Espacio debajo de cada campo de formulario
+}
+
+/* Estilos para los botones de acción */
+.form-actions {
+  display: flex;
+  justify-content: flex-end; // Alinea los botones a la derecha
+  gap: 15px; // Espacio entre los botones
+  margin-top: 30px; // Espacio arriba de los botones
+}
+
+/* Estilos para el Snackbar personalizado */
+.snackbar-success {
+  background-color: #43a047; /* Verde */
+  color: #ffffff;
+}
+
+.snackbar-error {
+  background-color: #d32f2f; /* Rojo */
+  color: #ffffff;
+}
+
+.snackbar-info {
+  background-color: #1976d2; /* Azul */
+  color: #ffffff;
+}
+
+/* Pequeñas adaptaciones para pantallas más pequeñas si fuera necesario */
+@media (max-width: 600px) {
+  .container {
+    margin: 10px;
+    padding: 15px;
+  }
+  .form-actions {
+    flex-direction: column; // Botones apilados en pantallas pequeñas
+    gap: 10px;
+  }
 }

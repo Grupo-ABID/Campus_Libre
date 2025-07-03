@@ -12,6 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
+  styleUrl: './report.component.css',
   standalone:true,
   imports: [MatListModule, MatDividerModule, MatCardModule, MatToolbarModule, CommonModule, ReactiveFormsModule, RouterLink, MatButtonModule]  // Lo que uses  
 })
@@ -21,16 +22,15 @@ export class ReportComponent implements OnInit {
 
   constructor(private evalService: EvaluacionService) {}
 
-  ngOnInit(): void {
+ngOnInit(): void {
     this.evalService.getGroupedResults().subscribe({
       next: (data) => {
         this.reportData = data;
-      }, 
-    error: (error) => {
-      console.error('Error al obtener datos:', error);
-    }
-  });
-
-
+        console.log('Datos cargados:', this.reportData);
+      },
+      error: (error) => {
+        console.error('Error al cargar datos:', error);
+      }
+    });
   }
 }

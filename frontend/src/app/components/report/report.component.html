@@ -5,14 +5,22 @@
     </mat-toolbar>
 
     <div class="report-content">
-      <form *ngFor="let carrera of reportData" class="carrera-section">
-        <mat-card-title>{{ carrera.name }}</mat-card-title>
-        <mat-list> <mat-list-item *ngFor="let item of carrera.results">
-            <span matListItemTitle>{{ item.semestre }}</span>
-            <span matListItemLine>Promedio: {{ item.promedio }}</span>
-          </mat-list-item>
-        </mat-list>
-        <mat-divider></mat-divider> </form>
+      <div *ngFor="let item of reportData" class="report-item">
+        <mat-card class="evaluation-card">
+          <mat-card-header>
+            <mat-card-title>Evaluación ID: {{ item.evaluacion }}</mat-card-title>
+            <mat-card-subtitle>Pregunta ID: {{ item.pregunta }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p><strong>Nota:</strong> {{ item.valor }}</p>
+            <p *ngIf="item.comentario; else noComment"><strong>Comentario:</strong> {{ item.comentario }}</p>
+            <ng-template #noComment>
+              <p><em>Sin comentarios</em></p>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
 
     <mat-card-actions class="button-container">
