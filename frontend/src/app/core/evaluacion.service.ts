@@ -16,7 +16,6 @@ constructor(private http: HttpClient) {}
 
   // obtener los cursos inscritos
   getEnrolledCourses(): Observable<any[]> {
-
     // tira el id:1, name: xx, etc.
     return this.http.get<any[]>(this.cursosUrl);
     
@@ -24,11 +23,14 @@ constructor(private http: HttpClient) {}
 
   // guardado de la evaluación
   saveEvaluation(evaluacionData: any): Observable<any> {
-
-    return this.http.get<any>(this.evaluacionesUrl, evaluacionData);
+    return this.http.post<any>(this.evaluacionesUrl, evaluacionData);
    
 
   }
+
+  saveRespuesta(respuestaData: any): Observable<any> {
+    return this.http.post<any>(this.respuestasUrl, respuestaData);
+}
 
   getGroupedResults(): Observable<any[]> {
     return this.http.get<any[]>(this.respuestasUrl);
