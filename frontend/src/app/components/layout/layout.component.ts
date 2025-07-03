@@ -4,7 +4,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { CustomSidenavComponent } from "../components/custom-sidenav/custom-sidenav.component";
+import { CustomSidenavComponent } from "../custom-sidenav/custom-sidenav.component";
 import {CommonModule} from '@angular/common';
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EvaluacionService } from '../core/evaluacion.service';
+import { EvaluacionService } from '../../core/evaluacion.service';
 import { CommonModule } from '@angular/common';    // Para *ngIf, *ngFor, etc.
 import { ReactiveFormsModule } from '@angular/forms';  // Para formGroup
 import {RouterLink} from '@angular/router';
