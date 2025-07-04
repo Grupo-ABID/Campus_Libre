@@ -39,4 +39,9 @@ export class EvaluacionService {
   getAvailableCourses(): Observable<string[]> {
     return this.http.get<string[]>(this.cursosUrl);
   }
+
+  getEncuestaByCurso(cursoId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlBase}encuestas/?curso=${cursoId}`);
+  }
+
 }

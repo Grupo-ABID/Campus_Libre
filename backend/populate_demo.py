@@ -1,36 +1,40 @@
 import os
 import django
+from datetime import datetime
+from random import randint
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.settings")
 django.setup()
 
 from api.models import (
     Carrera, Alumno, Periodo, Docente, Curso,
-    Pregunta, Encuesta
+    Pregunta, Encuesta, EvaluacionDocente, Respuesta
 )
 
-# Limpiar todo lo previo (opcional en desarrollo)
-Carrera.objects.all().delete()
-Alumno.objects.all().delete()
-Periodo.objects.all().delete()
-Docente.objects.all().delete()
-Curso.objects.all().delete()
-Pregunta.objects.all().delete()
+# Limpieza de datos anteriores (opcional en desarrollo)
+Respuesta.objects.all().delete()
+EvaluacionDocente.objects.all().delete()
 Encuesta.objects.all().delete()
+Pregunta.objects.all().delete()
+Curso.objects.all().delete()
+Docente.objects.all().delete()
+Periodo.objects.all().delete()
+Alumno.objects.all().delete()
+Carrera.objects.all().delete()
 
-# Crear Carrera
+# 1. Crear Carrera
 carrera = Carrera.objects.create(nombre="Ingeniería en Informática", codigo=101)
 
-# Crear Alumno
+# 2. Crear Alumno
 alumno = Alumno.objects.create(nombre="María Torres", rut="12345678-9", carrera=carrera)
 
-# Crear Periodo
+# 3. Crear Periodo
 periodo = Periodo.objects.create(year=2025, semestre="1")
 
-# Crear Docente
+# 4. Crear Docente
 docente = Docente.objects.create(nombre="Profesor Juan Pérez", rut="98765432-1")
 
-# Crear Curso
+# 5. Crear Curso
 curso = Curso.objects.create(
     nombre="Programación Avanzada",
     NRC=99991,
@@ -39,17 +43,34 @@ curso = Curso.objects.create(
     docente=docente
 )
 
-# Crear Preguntas
+# 6. Crear Preguntas
 p1 = Pregunta.objects.create(texto="¿El docente explica con claridad?")
 p2 = Pregunta.objects.create(texto="¿Resuelve dudas oportunamente?")
 p3 = Pregunta.objects.create(texto="¿El curso está bien organizado?")
 
-# Crear Encuesta
+# 7. Crear Encuesta y asociar preguntas
 encuesta = Encuesta.objects.create(
     titulo="Encuesta Evaluación Docente 1er Semestre",
     descripcion="Instrumento de evaluación de desempeño docente para el curso.",
     curso=curso
 )
-encuesta.preguntas.set([p1, p2, p3])  # Asocia preguntas a la encuesta
+encuesta.preguntas.set([p1, p2, p3])
+
+# 8. (Opcional) Crear Evaluación + Respuestas simuladas
+evaluacion = EvaluacionDocente.objects.create(
+    alumno=alumno,
+    curso=curso,
+    encuesta=encuesta,
+    fecha=datetime.now()
+)
+
+# 9. Crear respuestas con valores simulados
+for pregunta in [p1, p2, p3]:
+    Respuesta.objects.create(
+        evaluacion=evaluacion,
+        pregunta=pregunta,
+        valor=randint(4, 7),
+        comentario="Respuesta automática para prueba"
+    )
 
 print("✅ Base de datos poblada exitosamente con datos de prueba.")

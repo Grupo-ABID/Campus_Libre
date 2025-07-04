@@ -1,78 +1,131 @@
 from rest_framework import serializers
-from .models import (
-    Carrera, Alumno, Periodo, Docente, Curso,
-    Inscripcion, Pregunta, Encuesta, EvaluacionDocente, Respuesta
-)
+from .models import *
+
+# ------------------------
+# Carrera
+# ------------------------
 
 class CarreraSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carrera
-        fields = '__all__'
+        fields = ['id', 'nombre', 'codigo']
 
+# ------------------------
+# Alumno
+# ------------------------
 
-class AlumnoSerializer(serializers.ModelSerializer):
-    carrera = CarreraSerializer(read_only=True)
+class AlumnoReadSerializer(serializers.ModelSerializer):
+    carrera = CarreraSerializer()
 
     class Meta:
         model = Alumno
-        fields = '__all__'
+        fields = ['id', 'nombre', 'rut', 'carrera']
 
+class AlumnoWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alumno
+        fields = ['id', 'nombre', 'rut', 'carrera']
+
+# ------------------------
+# Periodo
+# ------------------------
 
 class PeriodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Periodo
-        fields = '__all__'
+        fields = ['id', 'year', 'semestre']
 
+# ------------------------
+# Docente
+# ------------------------
 
 class DocenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Docente
-        fields = '__all__'
+        fields = ['id', 'nombre', 'rut']
 
+# ------------------------
+# Curso
+# ------------------------
 
-class CursoSerializer(serializers.ModelSerializer):
-    periodo = PeriodoSerializer(read_only=True)
-    docente = DocenteSerializer(read_only=True)
+class CursoReadSerializer(serializers.ModelSerializer):
+    periodo = PeriodoSerializer()
+    docente = DocenteSerializer()
 
     class Meta:
         model = Curso
-        fields = '__all__'
+        fields = ['id', 'nombre', 'NRC', 'sesion', 'periodo', 'docente']
 
+class CursoWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Curso
+        fields = ['id', 'nombre', 'NRC', 'sesion', 'periodo', 'docente']
+
+# ------------------------
+# Inscripcion
+# ------------------------
 
 class InscripcionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inscripcion
-        fields = '__all__'
+        fields = ['id', 'alumno', 'curso']
 
+# ------------------------
+# Pregunta
+# ------------------------
 
 class PreguntaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pregunta
-        fields = '__all__'
+        fields = ['id', 'texto']
 
+# ------------------------
+# Encuesta
+# ------------------------
 
-class EncuestaSerializer(serializers.ModelSerializer):
-    preguntas = PreguntaSerializer(many=True, read_only=True)
+class EncuestaReadSerializer(serializers.ModelSerializer):
+    preguntas = PreguntaSerializer(many=True)
 
     class Meta:
         model = Encuesta
-        fields = '__all__'
+        fields = ['id', 'titulo', 'descripcion', 'curso', 'preguntas']
 
+class EncuestaWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Encuesta
+        fields = ['id', 'titulo', 'descripcion', 'curso', 'preguntas']
 
-class EvaluacionDocenteSerializer(serializers.ModelSerializer):
-    alumno = AlumnoSerializer(read_only=True)
-    curso = CursoSerializer(read_only=True)
-    encuesta = EncuestaSerializer(read_only=True)
+# ------------------------
+# EvaluacionDocente
+# ------------------------
+
+class EvaluacionDocenteReadSerializer(serializers.ModelSerializer):
+    alumno = AlumnoReadSerializer()
+    curso = CursoReadSerializer()
+    encuesta = EncuestaReadSerializer()
 
     class Meta:
         model = EvaluacionDocente
-        fields = '__all__'
+        fields = ['id', 'alumno', 'curso', 'encuesta', 'fecha']
 
+class EvaluacionDocenteWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EvaluacionDocente
+        fields = ['id', 'alumno', 'curso', 'encuesta']
 
-class RespuestaSerializer(serializers.ModelSerializer):
-    evaluacion = EvaluacionDocenteSerializer(read_only=True)
-    pregunta = PreguntaSerializer(read_only=True)
+# ------------------------
+# Respuesta
+# ------------------------
+
+class RespuestaReadSerializer(serializers.ModelSerializer):
+    evaluacion = EvaluacionDocenteReadSerializer()
+    pregunta = PreguntaSerializer()
 
     class Meta:
         model = Respuesta
-        fields = '__all__'
+        fields = ['id', 'evaluacion', 'pregunta', 'valor', 'comentario']
+
+class RespuestaWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Respuesta
+        fields = ['id', 'evaluacion', 'pregunta', 'valor', 'comentario']

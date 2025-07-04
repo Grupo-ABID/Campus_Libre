@@ -23,7 +23,7 @@
     <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="full-width-input">
         <mat-label>Curso:</mat-label>
-        <mat-select formControlName="courseId" [disabled]="true">
+        <mat-select formControlName="courseId">
           <mat-option [value]="selectedCourse.id">{{ selectedCourse.nombre }}</mat-option>
         </mat-select>
       </mat-form-field>

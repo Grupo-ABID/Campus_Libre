@@ -67,14 +67,29 @@ export class EvaluacionComponent implements OnInit {
   }
 
   selectCourse(course: any): void {
-    this.selectedCourse = course;
+  this.selectedCourse = course;
 
-    this.evaluationForm.patchValue({
-      courseId: course.id,
-      rating: '',
-      comment: '',
-    });
-  }
+  // Llamamos a la encuesta asociada
+  this.evalService.getEncuestaByCurso(course.id).subscribe({
+    next: (encuestas) => {
+      if (encuestas.length > 0) {
+        // Asignamos la primera encuesta encontrada
+        this.selectedCourse.encuesta = encuestas[0];
+        console.log('Encuesta encontrada:', this.selectedCourse.encuesta);
+
+        // Actualizamos el formulario
+        this.evaluationForm.patchValue({
+          courseId: course.id,
+          rating: '',
+          comment: '',
+        });
+      } else {
+        console.error('No se encontró encuesta para este curso.');
+      }
+    },
+    error: (err) => console.error('Error al cargar la encuesta:', err)
+  });
+}
 
   cancelEvaluation(): void {
     this.dialog.open(DialogComponent, {
@@ -94,9 +109,9 @@ export class EvaluacionComponent implements OnInit {
 
     // 🔧 Ajusta estos IDs según lo que tengas en tu base
     const evaluacionPayload = {
-      alumno: 1, // Cambiar por el alumno autenticado
+      alumno: 2, // Cambiar por el alumno autenticado
       curso: this.selectedCourse.id,
-      encuesta: 1, // Cambiar por la encuesta real asociada al curso
+      encuesta: this.selectedCourse.encuesta.id, // Deberia seleccionar la id de la encuesta
     };
 
     console.log('Enviando evaluación:', evaluacionPayload);
@@ -107,7 +122,7 @@ export class EvaluacionComponent implements OnInit {
 
         const respuestaPayload = {
           evaluacion: evaluacionResponse.id,
-          pregunta: 1, // Cambiar por la pregunta correspondiente
+          pregunta: 4, // Cambiar por la pregunta correspondiente
           valor: this.evaluationForm.value.rating,
           comentario: this.evaluationForm.value.comment,
         };

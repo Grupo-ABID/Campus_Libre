@@ -1,16 +1,13 @@
-from rest_framework import viewsets
-from rest_framework import status
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import (
-    Carrera, Alumno, Periodo, Docente, Curso,
-    Inscripcion, Pregunta, Encuesta, EvaluacionDocente, Respuesta
-)
-from .serializers import (
-    CarreraSerializer, AlumnoSerializer, PeriodoSerializer, DocenteSerializer, CursoSerializer,
-    InscripcionSerializer, PreguntaSerializer, EncuestaSerializer, EvaluacionDocenteSerializer, RespuestaSerializer
-)
+from .models import *
+from .serializers import *
+
+# ----------------------------
+# ViewSets con lógica dinámica
+# ----------------------------
 
 class CarreraViewSet(viewsets.ModelViewSet):
     queryset = Carrera.objects.all()
@@ -19,7 +16,11 @@ class CarreraViewSet(viewsets.ModelViewSet):
 
 class AlumnoViewSet(viewsets.ModelViewSet):
     queryset = Alumno.objects.all()
-    serializer_class = AlumnoSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return AlumnoWriteSerializer
+        return AlumnoReadSerializer
 
 
 class PeriodoViewSet(viewsets.ModelViewSet):
@@ -34,7 +35,11 @@ class DocenteViewSet(viewsets.ModelViewSet):
 
 class CursoViewSet(viewsets.ModelViewSet):
     queryset = Curso.objects.all()
-    serializer_class = CursoSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return CursoWriteSerializer
+        return CursoReadSerializer
 
 
 class InscripcionViewSet(viewsets.ModelViewSet):
@@ -49,7 +54,11 @@ class PreguntaViewSet(viewsets.ModelViewSet):
 
 class EncuestaViewSet(viewsets.ModelViewSet):
     queryset = Encuesta.objects.all()
-    serializer_class = EncuestaSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return EncuestaWriteSerializer
+        return EncuestaReadSerializer
 
     @action(detail=False, methods=['get'], url_path='curso/(?P<curso_id>[^/.]+)')
     def encuesta_por_curso(self, request, curso_id=None):
@@ -63,12 +72,25 @@ class EncuestaViewSet(viewsets.ModelViewSet):
 
 class EvaluacionDocenteViewSet(viewsets.ModelViewSet):
     queryset = EvaluacionDocente.objects.all()
-    serializer_class = EvaluacionDocenteSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return EvaluacionDocenteWriteSerializer
+        return EvaluacionDocenteReadSerializer
 
 
 class RespuestaViewSet(viewsets.ModelViewSet):
     queryset = Respuesta.objects.all()
-    serializer_class = RespuestaSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return RespuestaWriteSerializer
+        return RespuestaReadSerializer
+
+
+# ----------------------------
+# Vista personalizada para registrar evaluación completa
+# ----------------------------
 
 class RegistrarEvaluacionView(APIView):
     def post(self, request):
@@ -81,12 +103,14 @@ class RegistrarEvaluacionView(APIView):
         if not all([alumno_id, curso_id, encuesta_id, respuestas_data]):
             return Response({"error": "Datos incompletos"}, status=400)
 
+        # Crear la evaluación
         evaluacion = EvaluacionDocente.objects.create(
             alumno_id=alumno_id,
             curso_id=curso_id,
             encuesta_id=encuesta_id
         )
 
+        # Crear respuestas
         for r in respuestas_data:
             Respuesta.objects.create(
                 evaluacion=evaluacion,
@@ -95,4 +119,7 @@ class RegistrarEvaluacionView(APIView):
                 comentario=r.get("comentario", "")
             )
 
-        return Response({"message": "Evaluación registrada correctamente."}, status=201)
+        return Response({
+            "message": "Evaluación registrada correctamente.",
+            "evaluacion_id": evaluacion.id
+        }, status=201)
