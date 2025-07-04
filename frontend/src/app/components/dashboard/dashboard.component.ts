@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const grouped: { [key: string]: { [key: string]: number } } = {};
 
     rawData.forEach(item => {
-      console.log('Item recibido:', item); // prueba de datos 
+      console.log('Item recibido:', item);
 
       const curso = item.evaluacion.curso.nombre;
       const periodo = `${item.evaluacion.curso.periodo.year}-${item.evaluacion.curso.periodo.semestre}`;
@@ -96,8 +96,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const cursos = Array.from(new Set(evaluations.map(e => e.curso)));
     const semestres = Array.from(new Set(evaluations.map(e => e.semestre))).sort();
 
-    const backgroundColors: string[] = [
-      'rgba(66, 165, 245, 0.8)',
+    const baseColors: string[] = [
+      'rgba(117, 205, 45, 0.8)',
       'rgba(255, 167, 38, 0.8)',
       'rgba(102, 187, 106, 0.8)',
       'rgba(239, 83, 80, 0.8)',
@@ -107,7 +107,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       'rgba(75, 192, 192, 0.8)'
     ];
 
+    function setOpacity(color: string, opacity: number): string {
+      return color.replace(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*[\d.]+\)/,
+        (_, r, g, b) => `rgba(${r}, ${g}, ${b}, ${opacity})`);
+    }
+
     const datasets = semestres.map((semestre, index) => {
+      const backgroundColors = cursos.map((_, i) => baseColors[i % baseColors.length]);
+      const borderColors = backgroundColors.map(color => setOpacity(color, 1));
+
       const dataForSemester = cursos.map(curso => {
         const entry = evaluations.find(e => e.curso === curso && e.semestre === semestre);
         return entry ? entry.cantidad : 0;
@@ -116,8 +124,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return {
         label: `Evaluaciones ${semestre}`,
         data: dataForSemester,
-        backgroundColor: backgroundColors[index % backgroundColors.length],
-        borderColor: backgroundColors[index % backgroundColors.length].replace('0.8', '1'),
+        backgroundColor: backgroundColors,
+        borderColor: borderColors,
         borderWidth: 1,
       };
     });
