@@ -22,6 +22,9 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copiar script para generar env.js al iniciar
 COPY set-env.sh /docker-entrypoint.d/
 
+# Dar permisos de ejecución al script
+RUN chmod +x /docker-entrypoint.d/set-env.sh
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
