@@ -18,3 +18,5 @@ services:
       context: ./frontend
     ports:
       - "80:80"
+    environment:
+      - API_URL=http://backend:8000

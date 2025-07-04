@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from .views import (
     CarreraViewSet, AlumnoViewSet, PeriodoViewSet, DocenteViewSet, CursoViewSet,
@@ -23,4 +24,5 @@ urlpatterns = [
     path('evaluaciones/responder/', RegistrarEvaluacionView.as_view()),  # 👈 Mueve esto arriba
     path('ping/', lambda request: JsonResponse({"pong": True})),         # prueba extra
     path('', include(router.urls)),                                      # 👈 Este debe ir al final
+    path('admin/', admin.site.urls)
 ]

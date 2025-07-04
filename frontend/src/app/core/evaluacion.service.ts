@@ -1,51 +1,42 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.dynamic';
 
 @Injectable({ providedIn: 'root' })
-
 export class EvaluacionService {
-  
-private apiUrlBase = 'http://127.0.0.1:8000/api/';
 
-private cursosUrl = `${this.apiUrlBase}cursos/`;
-private evaluacionesUrl = `${this.apiUrlBase}evaluaciones/`;
-private respuestasUrl = `${this.apiUrlBase}respuestas/`;
+  private apiUrlBase = `${environment.apiUrl}/api/`;
 
-constructor(private http: HttpClient) {}
+  private cursosUrl = `${this.apiUrlBase}cursos/`;
+  private evaluacionesUrl = `${this.apiUrlBase}evaluaciones/`;
+  private respuestasUrl = `${this.apiUrlBase}respuestas/`;
 
-  // obtener los cursos inscritos
+  constructor(private http: HttpClient) {}
+
+  // Obtener los cursos inscritos
   getEnrolledCourses(): Observable<any[]> {
-    // tira el id:1, name: xx, etc.
     return this.http.get<any[]>(this.cursosUrl);
-    
   }
 
-  // guardado de la evaluación
+  // Guardado de la evaluación
   saveEvaluation(evaluacionData: any): Observable<any> {
     return this.http.post<any>(this.evaluacionesUrl, evaluacionData);
-   
-
   }
 
   saveRespuesta(respuestaData: any): Observable<any> {
     return this.http.post<any>(this.respuestasUrl, respuestaData);
-}
+  }
 
   getGroupedResults(): Observable<any[]> {
     return this.http.get<any[]>(this.respuestasUrl);
   }
 
   getTeacherEvaluations() {
-    
+    // Aquí puedes agregar funcionalidad si lo necesitas
   }
 
-   // Nuevo método para obtener los cursos disponibles
-  getAvailableCourses(): Observable<string[]> { // O `any[]` si el backend devuelve objetos completos de cursos
+  getAvailableCourses(): Observable<string[]> {
     return this.http.get<string[]>(this.cursosUrl);
   }
-
 }
-
-
-
