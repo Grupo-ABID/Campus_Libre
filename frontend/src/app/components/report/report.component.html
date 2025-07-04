@@ -8,8 +8,8 @@
       <div *ngFor="let item of reportData" class="report-item">
         <mat-card class="evaluation-card">
           <mat-card-header>
-            <mat-card-title>Evaluación ID: {{ item.evaluacion }}</mat-card-title>
-            <mat-card-subtitle>Pregunta ID: {{ item.pregunta }}</mat-card-subtitle>
+            <mat-card-title>Curso: {{ item.evaluacion.curso.nombre }}</mat-card-title>
+            <mat-card-subtitle>Periodo: {{ item.evaluacion.curso.periodo.year }} - {{ item.evaluacion.curso.periodo.semestre }}</mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>

@@ -11,6 +11,8 @@ class CarreraSerializer(serializers.ModelSerializer):
 
 
 class AlumnoSerializer(serializers.ModelSerializer):
+    carrera = CarreraSerializer(read_only=True)
+
     class Meta:
         model = Alumno
         fields = '__all__'
@@ -29,6 +31,9 @@ class DocenteSerializer(serializers.ModelSerializer):
 
 
 class CursoSerializer(serializers.ModelSerializer):
+    periodo = PeriodoSerializer(read_only=True)
+    docente = DocenteSerializer(read_only=True)
+
     class Meta:
         model = Curso
         fields = '__all__'
@@ -55,12 +60,19 @@ class EncuestaSerializer(serializers.ModelSerializer):
 
 
 class EvaluacionDocenteSerializer(serializers.ModelSerializer):
+    alumno = AlumnoSerializer(read_only=True)
+    curso = CursoSerializer(read_only=True)
+    encuesta = EncuestaSerializer(read_only=True)
+
     class Meta:
         model = EvaluacionDocente
         fields = '__all__'
 
 
 class RespuestaSerializer(serializers.ModelSerializer):
+    evaluacion = EvaluacionDocenteSerializer(read_only=True)
+    pregunta = PreguntaSerializer(read_only=True)
+
     class Meta:
         model = Respuesta
         fields = '__all__'

@@ -1,21 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
-import { NgChartsModule } from 'ng2-charts'; // Importa NgChartsModule aquí
+import { NgChartsModule } from 'ng2-charts';
+import { EvaluacionService } from '../../core/evaluacion.service';
 
-// Define una interfaz para nuestra estructura de datos de evaluación
 interface Evaluation {
-  career: string;
-  semester: string;
-  evaluations: number;
+  curso: string;
+  semestre: string;
+  cantidad: number;
 }
 
 @Component({
   selector: 'app-dashboard',
-  // Si tu template y estilos están en archivos separados, se mantienen así:
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  standalone: true, // <--- ¡Esto es lo importante! Declara el componente como autónomo
-  imports: [NgChartsModule] // <--- ¡Importa NgChartsModule aquí dentro de imports!
+  standalone: true,
+  imports: [NgChartsModule]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
@@ -23,55 +22,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-        labels: {
-          font: {
-            size: 14
-          }
-        }
-      },
-      title: {
-        display: true,
-        text: 'Evaluaciones Realizadas por Carreras y Semestre',
-        font: {
-          size: 18
-        },
-        color: '#333'
-      }
+      legend: { display: true, position: 'top' },
+      title: { display: true, text: 'Evaluaciones Realizadas por Curso y Semestre' }
     },
     scales: {
       x: {
         stacked: false,
-        title: {
-          display: true,
-          text: 'Carreras',
-          font: {
-            size: 16
-          }
-        },
-        ticks: {
-          font: {
-            size: 12
-          }
-        }
+        title: { display: true, text: 'Cursos' }
       },
       y: {
         stacked: false,
         beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Número de Evaluaciones',
-          font: {
-            size: 16
-          }
-        },
-        ticks: {
-          font: {
-            size: 12
-          }
-        }
+        title: { display: true, text: 'Número de Evaluaciones' }
       }
     }
   };
@@ -79,32 +41,60 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public barChartType: ChartType = 'bar';
   public barChartData!: ChartData<'bar'>;
 
-  private mockEvaluations: Evaluation[] = [
-    { career: 'Ingeniería de Sistemas', semester: '2023-1', evaluations: 12 },
-    { career: 'Ingeniería de Sistemas', semester: '2023-2', evaluations: 15 },
-    { career: 'Ingeniería de Sistemas', semester: '2024-1', evaluations: 10 },
-    { career: 'Ingeniería Civil', semester: '2023-1', evaluations: 8 },
-    { career: 'Ingeniería Civil', semester: '2023-2', evaluations: 10 },
-    { career: 'Ingeniería Civil', semester: '2024-1', evaluations: 7 },
-    { career: 'Arquitectura', semester: '2023-1', evaluations: 5 },
-    { career: 'Arquitectura', semester: '2023-2', evaluations: 7 },
-    { career: 'Arquitectura', semester: '2024-1', evaluations: 9 },
-    { career: 'Derecho', semester: '2023-1', evaluations: 10 },
-    { career: 'Derecho', semester: '2023-2', evaluations: 12 },
-    { career: 'Derecho', semester: '2024-1', evaluations: 11 },
-  ];
+  constructor(private evalService: EvaluacionService) {}
 
   ngOnInit(): void {
-    this.prepareChartData();
+    this.loadEvaluations();
   }
 
-  ngOnDestroy(): void {
-    // ng2-charts maneja la destrucción interna de Chart.js
+  ngOnDestroy(): void {}
+
+  loadEvaluations(): void {
+    this.evalService.getGroupedResults().subscribe({
+      next: (data) => {
+        console.log('Datos cargados para dashboard:', data);
+        const formattedData = this.formatBackendData(data);
+        this.prepareChartData(formattedData);
+      },
+      error: (err) => {
+        console.error('Error al cargar datos del dashboard:', err);
+      }
+    });
   }
 
-  private prepareChartData(): void {
-    const careers = Array.from(new Set(this.mockEvaluations.map(e => e.career)));
-    const semesters = Array.from(new Set(this.mockEvaluations.map(e => e.semester))).sort();
+  private formatBackendData(rawData: any[]): Evaluation[] {
+    const grouped: { [key: string]: { [key: string]: number } } = {};
+
+    rawData.forEach(item => {
+      console.log('Item recibido:', item); // prueba de datos 
+
+      const curso = item.evaluacion.curso.nombre;
+      const periodo = `${item.evaluacion.curso.periodo.year}-${item.evaluacion.curso.periodo.semestre}`;
+
+      if (!grouped[curso]) grouped[curso] = {};
+      if (!grouped[curso][periodo]) grouped[curso][periodo] = 0;
+
+      grouped[curso][periodo] += 1;
+    });
+
+    const evaluations: Evaluation[] = [];
+
+    for (const curso in grouped) {
+      for (const periodo in grouped[curso]) {
+        evaluations.push({
+          curso: curso,
+          semestre: periodo,
+          cantidad: grouped[curso][periodo]
+        });
+      }
+    }
+
+    return evaluations;
+  }
+
+  private prepareChartData(evaluations: Evaluation[]): void {
+    const cursos = Array.from(new Set(evaluations.map(e => e.curso)));
+    const semestres = Array.from(new Set(evaluations.map(e => e.semestre))).sort();
 
     const backgroundColors: string[] = [
       'rgba(66, 165, 245, 0.8)',
@@ -117,16 +107,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       'rgba(75, 192, 192, 0.8)'
     ];
 
-    const datasets = semesters.map((semester, index) => {
-      const dataForSemester = careers.map(career => {
-        const evaluationEntry = this.mockEvaluations.find(
-          e => e.career === career && e.semester === semester
-        );
-        return evaluationEntry ? evaluationEntry.evaluations : 0;
+    const datasets = semestres.map((semestre, index) => {
+      const dataForSemester = cursos.map(curso => {
+        const entry = evaluations.find(e => e.curso === curso && e.semestre === semestre);
+        return entry ? entry.cantidad : 0;
       });
 
       return {
-        label: `Evaluaciones ${semester}`,
+        label: `Evaluaciones ${semestre}`,
         data: dataForSemester,
         backgroundColor: backgroundColors[index % backgroundColors.length],
         borderColor: backgroundColors[index % backgroundColors.length].replace('0.8', '1'),
@@ -135,7 +123,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     this.barChartData = {
-      labels: careers,
+      labels: cursos,
       datasets: datasets,
     };
   }
