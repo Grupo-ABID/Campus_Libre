@@ -71,9 +71,7 @@ TEMPLATES = [
 ]
 
 #Configuración de CORS
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 WSGI_APPLICATION = 'api.wsgi.application'
 

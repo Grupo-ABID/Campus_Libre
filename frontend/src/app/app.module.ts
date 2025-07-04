@@ -4,7 +4,7 @@ import { NgChartsModule } from 'ng2-charts'; // ✅ Asegúrate de que esté aqu�
 import {HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
