@@ -1,0 +1,32 @@
+/* dashboard.component.css */
+.chart-container {
+  position: relative;
+  width: 100%; /* Hazlo responsive al ancho de su contenedor padre */
+  height: 500px; /* Establece una altura predeterminada, chart.js manejará la responsividad */
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Responsividad básica para pantallas más pequeñas si es necesario */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    height: 300px;
+  }
+}

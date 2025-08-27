@@ -1,0 +1,22 @@
+<div class="main-container">
+  <mat-card class="report-card">
+    <mat-toolbar class="report-toolbar">
+      <h2>Reporte de Evaluaciones</h2>
+    </mat-toolbar>
+
+    <div class="report-content">
+      <form *ngFor="let carrera of reportData" class="carrera-section">
+        <mat-card-title>{{ carrera.name }}</mat-card-title>
+        <mat-list> <mat-list-item *ngFor="let item of carrera.results">
+            <span matListItemTitle>{{ item.semestre }}</span>
+            <span matListItemLine>Promedio: {{ item.promedio }}</span>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider> </form>
+    </div>
+
+    <mat-card-actions class="button-container">
+      <button [routerLink]="['/dashboard']" mat-raised-button color="primary">Salir</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

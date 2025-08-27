@@ -1,0 +1,55 @@
+.curso-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.curso-item:hover {
+  background-color: #e9ecef;
+  box-shadow: inset 3px 0 0 #007bff;
+  color: #007bff;
+}
+
+button {
+  padding: 1rem;
+  margin-left: 0.5rem;
+}
+
+form {
+    max-width: 400px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+/* evaluacion.component.css (o .scss) */
+
+/* Asegura que los campos de formulario ocupen el ancho completo */
+.full-width-input {
+  width: 100%;
+  margin-bottom: 20px; /* Espacio debajo de cada campo */
+}
+
+/* Estilos para el contenedor de los botones */
+.form-actions {
+  display: flex; /* Alinea los botones horizontalmente */
+  gap: 10px;     /* Espacio entre los botones */
+  justify-content: flex-end; /* Alinea los botones a la derecha */
+  margin-top: 20px; /* Espacio encima de los botones */
+}
+
+/* Opcional: Estilo para los ítems de la lista de cursos */
+.curso-item {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.curso-item:hover {
+  background-color: #f0f0f0; /* Un color suave al pasar el ratón */
+}
+
+/* Opcional: Ajustar el ancho del contenedor principal para que no sea tan amplio en pantallas grandes */
+.container {
+  max-width: 800px; /* Limita el ancho máximo del contenedor */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px; /* Añade un poco de relleno interno */
+}
